@@ -209,7 +209,7 @@ class GUI(object):
             gtitle = ftitle.replace(':', '')
             htitle = gtitle.replace('|', '')
             ititle = htitle.replace('#', "")
-            print("gtitle:" , ititle)
+            print("ititle:" , ititle)
             ogg = ititle + ".ogg"
             target = ititle  + ".mp4" 
             print(target)
