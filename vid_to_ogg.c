@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #define SIZE 65792
