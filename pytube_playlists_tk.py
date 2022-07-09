@@ -208,10 +208,9 @@ class GUI(object):
             ftitle = etitle.replace('/', '')
             gtitle = ftitle.replace(':', '')
             htitle = gtitle.replace('|', '')
-            ititle = htitle.replace('#', '')
-            print("ititle:" , ititle)
-            ogg = ititle + ".ogg"
-            target = ititle  + ".mp4" 
+            print("gtitle:" , htitle)
+            ogg = htitle + ".ogg"
+            target = htitle  + ".mp4" 
             print(target)
             if os.path.isfile(ogg) == False:
                 out = subprocess.Popen(['./vid_to_ogg', target], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
