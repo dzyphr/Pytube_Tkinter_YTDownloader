@@ -38,7 +38,7 @@ class GUI(object):
         self.listlimitlabel.grid(row=1, column=0,)
         self.listlimit = tk.Entry(self.main, textvariable=self.LIMIT, width=50, background="#614344")
         self.listlimit.grid(row=1, column=34, columnspan=11)
-        #self.listlimit.focus()
+        self.listlimit.focus()
         self.audio = False;
         self.ogg = False;
         self.del_orig = False;
@@ -152,10 +152,11 @@ class GUI(object):
                     YouTube(video).streams.get_highest_resolution().download()
                     i = i+1
                     if self.LIMIT.get() == "":
+                        print("NO LIMIT SET")
                         limit = len(self.pl)
                     else:
                         limit = self.LIMIT.get()
-                    if i == limit:
+                    if i == int(limit):
                         break
                     else:
                         continue
@@ -163,7 +164,7 @@ class GUI(object):
             except KeyError:
                 self.KeyErr()
             
-            if i == limit:
+            if i == int(limit):
                 break
 
         while self.audio == True:
@@ -175,7 +176,7 @@ class GUI(object):
                         limit = len(self.pl)
                     else:
                         limit = self.LIMIT.get()
-                    if i == limit:
+                    if i == int(limit):
                         break
                     else:
                         continue
@@ -183,7 +184,7 @@ class GUI(object):
             except KeyError:
                 self.KeyErr()
             
-            if i == limit:
+            if i == int(limit):
                 if self.ogg == True:
                     #print("conv oggs")
                     self.convert_ogg()
@@ -221,7 +222,7 @@ class GUI(object):
                 print(str_stdout, str_stderr)
             if self.del_orig == True:
                 os.remove(target)
-            if i == limit:
+            if i == int(limit):
                 break
         #out = subprocess.Popen(['vid_to_ogg', ''], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
