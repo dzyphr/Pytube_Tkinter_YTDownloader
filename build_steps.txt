@@ -1,0 +1,4 @@
+STEP 1: find the correct pytube_YOUR_OS.sh file for your os: (ubuntu or mac)
+IF YOU ARE ON MAC AND ALREADY HAVE HOMEBREW INSTALLED, USE THE BREWED VERSION OF THE SH FILE
+STEP 2: if you havent before, run chmod +x pytube_YOUR_OS.sh
+STEP 3: finally run ./pytube_YOUR_OS.sh provide password for new installs if asked
