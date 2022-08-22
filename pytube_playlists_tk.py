@@ -14,7 +14,7 @@ class GUI(object):
         #small window mode
         #self.main.geometry("350x850+700+200")
         #self.main.geometry("1920x1080")
-        self.main.geometry("890x550")
+        self.main.geometry("890x600")
         self.main.resizable(False, False)
         self.main.title('PyTubeTk')
         #self.main.config(bg=self.rgb((70, 0, 62)))
@@ -38,35 +38,39 @@ class GUI(object):
         self.listlimitlabel.grid(row=1, column=0,)
         self.listlimit = tk.Entry(self.main, textvariable=self.LIMIT, width=50, background="#614344")
         self.listlimit.grid(row=1, column=34, columnspan=11)
-        self.listlimit.focus()
+        self.DIRECTORY = tkinter.StringVar()
+        self.dirEntryLabel = tk.Label(self.main, text="Playlist Download Directory Name:",  background="#332c23" ,fg="#B1DDF1")
+        self.dirEntryLabel.grid(row=2, column=0,)
+        self.directoryEntry = tk.Entry(self.main, textvariable=self.DIRECTORY, width=50, background="#614344")
+        self.directoryEntry.grid(row=2, column=34, columnspan=11)
         self.audio = False;
         self.ogg = False;
         self.del_orig = False;
         #convert to ogg button
         self.conv_ogg = tk.Button(self.main, text="Convert .mp4 to .ogg", command=self.ConvertToOgg, bg="#9F87AF", activebackground="#88527F")
-        self.conv_ogg.grid(row = 13, column =0)
+        self.conv_ogg.grid(row = 14, column =0)
         #format as audio button
         self.format_audio = tk.Button(self.main, text="Format as Audio", command=self.FormatAsAudio,  bg="#9F87AF", activebackground="#88527F")
-        self.format_audio.grid(row = 12, column =0)
+        self.format_audio.grid(row = 13, column =0)
         #delete .mp4 original file
         self.delete_or = tk.Button(self.main, text="Delete original .mp4", command=self.del_orig_bool,  bg="#9F87AF", activebackground="#88527F")
-        self.delete_or.grid(row = 14, column = 0)
+        self.delete_or.grid(row = 15, column = 0)
         #download button
         self.download = tkinter.Button(self.main , text="Download", command=self.download_loop, bg="#9F87AF", activebackground="#88527F")
-        self.download.grid(row = 20, column = 0)
+        self.download.grid(row = 21, column = 0)
         #list videos button
         self.list = tk.Button(self.main, text="Get List of Videos", command=self.list_loop,  bg="#9F87AF", activebackground="#88527F")
-        self.list.grid(row = 6, column = 37,  )
+        self.list.grid(row = 7, column = 37,  )
         #clearlist button
         self.clearlist = tk.Button(self.main, text="Clear List", command=self.clearlist,  bg="#9F87AF", activebackground="#88527F")
-        self.clearlist.grid(row=20, column=34)
+        self.clearlist.grid(row=21, column=34)
         #list videos read only text
         self.text_area = st.ScrolledText(self.main ,width=79, font = ("Times New Roman", 11), background="#614344")
-        self.text_area.grid(row=7, column=18, columnspan=20, rowspan=10)
+        self.text_area.grid(row=8, column=18, columnspan=20, rowspan=10)
         self.text_area.configure(state ='disabled')
         #format as audio text box
         self.format_status = st.ScrolledText(self.main,width=35, height=4, font = ("Times New Roman", 10), background="#614344")
-        self.format_status.grid(row=15, column=0, columnspan = 1, rowspan=4)
+        self.format_status.grid(row=16, column=0, columnspan = 1, rowspan=4)
         self.format_status.configure(state="disabled") 
 
     def rgb(self, rgb):
@@ -146,10 +150,15 @@ class GUI(object):
     def getplaylist(self):
         i = 0
         limit = 0
+        path = f'PlaylistDownload'
+        if self.DIRECTORY.get() != "":
+            path = f'{self.DIRECTORY.get()}'
+        if os.path.exists(path) == False:
+            os.mkdir(path)
         while self.audio == False:
             try:
                 for video in self.pl:
-                    YouTube(video).streams.get_highest_resolution().download()
+                    YouTube(video).streams.get_highest_resolution().download(output_path=path)
                     i = i+1
                     if self.LIMIT.get() == "":
                         print("NO LIMIT SET")
@@ -170,7 +179,7 @@ class GUI(object):
         while self.audio == True:
             try:
                 for video in self.pl:
-                    YouTube(video).streams.filter(only_audio=True)[0].download()
+                    YouTube(video).streams.filter(only_audio=True)[0].download(output_path=path)
                     i = i+1
                     if self.LIMIT.get() == "":
                         limit = len(self.pl)
@@ -211,8 +220,9 @@ class GUI(object):
             htitle = gtitle.replace('|', '')
             ititle = htitle.replace('#', "")
             print("ititle:" , ititle)
-            ogg = ititle + ".ogg"
-            target = ititle  + ".mp4" 
+            directory = self.DIRECTORY.get()
+            ogg = directory + "/" + ititle + ".ogg"
+            target = directory + "/" + ititle  + ".mp4" 
             print(target)
             if os.path.isfile(ogg) == False:
                 out = subprocess.Popen(['./vid_to_ogg', target], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
