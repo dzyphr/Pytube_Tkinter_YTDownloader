@@ -158,18 +158,18 @@ class GUI(object):
         while self.audio == False:
             try:
                 for video in self.pl:
-                    YouTube(video).streams.get_highest_resolution().download(output_path=path)
+                    if pytube.extract.is_age_restricted(video) == False:				    
+                        YouTube(video, use_oauth=True).streams.get_highest_resolution().download(output_path=path)
+                        if self.LIMIT.get() == "":
+                            print("NO LIMIT SET")
+                            limit = len(self.pl)
+                        else:
+                            limit = self.LIMIT.get()
+                        if i == int(limit):
+                            break
+                        else:
+                            continue
                     i = i+1
-                    if self.LIMIT.get() == "":
-                        print("NO LIMIT SET")
-                        limit = len(self.pl)
-                    else:
-                        limit = self.LIMIT.get()
-                    if i == int(limit):
-                        break
-                    else:
-                        continue
-
             except KeyError:
                 self.KeyErr()
             
@@ -179,7 +179,7 @@ class GUI(object):
         while self.audio == True:
             try:
                 for video in self.pl:
-                    YouTube(video).streams.filter(only_audio=True)[0].download(output_path=path)
+                    YouTube(video, use_oauth=True).streams.filter(only_audio=True)[0].download(output_path=path)
                     i = i+1
                     if self.LIMIT.get() == "":
                         limit = len(self.pl)
